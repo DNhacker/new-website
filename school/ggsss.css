@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Platypi:wght@300;800&family=Shadows+Into+Light&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Platypi", serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #e2d8c5; /* Lightroom Beige */
+    color: #2d2512; /* Dark Brown */
+    overflow-x: hidden;
+}
+
+/* =============== Header =============== */
+header {
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    background-color: #bca791;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 100;
+}
+
+header .logo {
+    font-size: 2em;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #2d2512;
+}
+
+#menuToggle {
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin: 10px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    padding: 6px 15px;
+    color: #412812;
+    border-radius: 20px;
+    font-size: 16px;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    background: #cfbe9f;
+    color: black;
+}
+
+/* =============== Mobile Fullscreen Menu =============== */
+@media (max-width: 1024px) {
+    #menuToggle {
+        display: block;
+        z-index: 101;
+    }
+
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: translateY(-100%);
+        transition: 0.5s ease;
+    }
+
+    nav.active {
+        transform: translateY(0);
+    }
+
+    nav ul {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav ul li {
+        margin: 20px 0;
+    }
+
+    nav ul li a {
+        font-size: 24px;
+        color: white;
+    }
+}
+
+/* =============== Image & Text Sections =============== */
+.image-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    height: 100vh;
+    padding: 0 10%;
+}
+
+.image-section img {
+    width: 35vw;
+    border-radius: 10px;
+    filter: blur(10px);
+    opacity: 0;
+    transition: filter 1.5s ease-out, opacity 1.5s ease-out;
+}
+
+.text-content {
+    font-size: 18px;
+    background: rgba(201, 193, 177, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: transform 1.2s ease-out, opacity 1.2s ease-out;
+}
+
+/* Alternating Image & Text Positions (Desktop) */
+.image-section:nth-child(odd) img {
+    order: 2;
+}
+
+.image-section:nth-child(odd) .text-content {
+    order: 1;
+    text-align: left;
+}
+
+.image-section:nth-child(even) img {
+    order: 1;
+}
+
+.image-section:nth-child(even) .text-content {
+    order: 2;
+    text-align: right;
+}
+
+/* Reveal Animation */
+.image-section.show img {
+    filter: blur(0);
+    opacity: 1;
+}
+
+.image-section.show .text-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =============== Mobile View: Text Below Image =============== */
+@media (max-width: 1024px) {
+    .image-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+        height: auto;
+        padding: 5% 5%;
+    }
+
+    .image-section img {
+        width: 80vw;
+        margin: auto;
+        order: 1 !important;
+    }
+
+    .text-content {
+        width: 90%;
+        margin: 20px auto 0;
+        text-align: center;
+        order: 2 !important;
+    }
+}
+
+/* =============== Footer =============== */
+footer {
+    background: #BCA791;
+    color: #2D2512;
+    padding: 40px 10%;
+    text-align: center;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-bottom {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+/* =============== Responsive Footer =============== */
+@media (max-width: 1024px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* blog */ 
+.blog-section {
+    padding: 50px 20px;
+    background: #f9f9f9;
+  }
+  
+  .blog-section h2 {
+    font-family: 'Platypi', serif;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .blog-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin: 15px auto;
+    max-width: 800px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.5s ease-in-out;
+  }
+  
+  .blog-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  

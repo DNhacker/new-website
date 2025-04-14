@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triangle Calculator with Graph</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 80%;
+            padding: 5px;
+            margin: 5px;
+        }
+        button {
+            padding: 8px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        canvas {
+            border: 1px solid black;
+            margin-top: 20px;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Triangle Calculator with Graph</h2>
+
+    <!-- Find Angles -->
+    <div class="container">
+        <h3>Find Angles (Given 3 Sides)</h3>
+        <input type="number" id="ab" placeholder="Enter AB">
+        <input type="number" id="bc" placeholder="Enter BC">
+        <input type="number" id="ca" placeholder="Enter CA">
+        <button onclick="calculateAngles()">Find Angles</button>
+        <p id="anglesResult"></p>
+    </div>
+
+    <!-- Find Side Length -->
+    <div class="container">
+        <h3>Find Side Length (Given 2 Sides & Angle)</h3>
+        <input type="number" id="side1" placeholder="Enter AB">
+        <input type="number" id="side2" placeholder="Enter BC">
+        <input type="number" id="angle" placeholder="Enter Angle at B (Degrees)">
+        <button onclick="calculateSide()">Find CA</button>
+        <p id="sideResult"></p>
+    </div>
+
+    <!-- Canvas for Drawing Triangle -->
+    <canvas id="triangleCanvas" width="400" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById("triangleCanvas");
+        const ctx = canvas.getContext("2d");
+
+        function calculateAngles() {
+            let a = parseFloat(document.getElementById('bc').value);
+            let b = parseFloat(document.getElementById('ca').value);
+            let c = parseFloat(document.getElementById('ab').value);
+
+            if (a > 0 && b > 0 && c > 0) {
+                let A = Math.acos((b**2 + c**2 - a**2) / (2 * b * c)) * (180 / Math.PI);
+                let B = Math.acos((a**2 + c**2 - b**2) / (2 * a * c)) * (180 / Math.PI);
+                let C = 180 - (A + B);
+
+                document.getElementById('anglesResult').innerText = 
+                    `Angles: A = ${A.toFixed(2)}°, B = ${B.toFixed(2)}°, C = ${C.toFixed(2)}°`;
+
+                drawTriangle(a, b, c, A, B, C);
+            } else {
+                alert("Please enter valid side lengths.");
+            }
+        }
+
+        function calculateSide() {
+            let b = parseFloat(document.getElementById('side1').value);
+            let c = parseFloat(document.getElementById('side2').value);
+            let B = parseFloat(document.getElementById('angle').value);
+
+            if (b > 0 && c > 0 && B > 0) {
+                let B_rad = B * (Math.PI / 180);
+                let a = Math.sqrt(b**2 + c**2 - 2 * b * c * Math.cos(B_rad));
+
+                document.getElementById('sideResult').innerText = `CA = ${a.toFixed(2)}`;
+
+                let A = Math.acos((b**2 + a**2 - c**2) / (2 * b * a)) * (180 / Math.PI);
+                let C = 180 - (A + B);
+
+                drawTriangle(a, b, c, A, B, C);
+            } else {
+                alert("Please enter valid values.");
+            }
+        }
+
+        function drawTriangle(a, b, c, A, B, C) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Scaling factor to fit the triangle within the canvas
+            let maxSide = Math.max(a, b, c);
+            let scale = 300 / maxSide;  // Scale factor (max 300px for the largest side)
+
+            let Ax = 50, Ay = 350; // Fixed bottom-left point
+            let Bx = Ax + c * scale, By = Ay; // Fixed bottom-right point
+            let Cx = Ax + b * scale * Math.cos(B * Math.PI / 180);  // Calculate X using angle
+            let Cy = Ay - b * scale * Math.sin(B * Math.PI / 180);  // Calculate Y using sine
+
+            // Center the triangle in the canvas
+            let xOffset = (400 - (Math.max(Ax, Bx, Cx) - Math.min(Ax, Bx, Cx))) / 2 - Math.min(Ax, Bx, Cx);
+            let yOffset = (400 - (Math.max(Ay, By, Cy) - Math.min(Ay, By, Cy))) / 2 - Math.min(Ay, By, Cy);
+
+            Ax += xOffset; Ay += yOffset;
+            Bx += xOffset; By += yOffset;
+            Cx += xOffset; Cy += yOffset;
+
+            // Draw triangle
+            ctx.beginPath();
+            ctx.moveTo(Ax, Ay);
+            ctx.lineTo(Bx, By);
+            ctx.lineTo(Cx, Cy);
+            ctx.closePath();
+            ctx.stroke();
+
+            // Mark points
+            ctx.fillText("A", Ax - 10, Ay + 10);
+            ctx.fillText("B", Bx + 5, By + 5);
+            ctx.fillText("C", Cx, Cy - 5);
+
+            // Display side lengths
+            ctx.fillText(`AB = ${c.toFixed(2)}`, (Ax + Bx) / 2, Ay + 15);
+            ctx.fillText(`BC = ${a.toFixed(2)}`, (Bx + Cx) / 2, (By + Cy) / 2);
+            ctx.fillText(`CA = ${b.toFixed(2)}`, (Ax + Cx) / 2 - 10, (Ay + Cy) / 2);
+
+            // Display angles
+            ctx.fillText(`∠A = ${A.toFixed(2)}°`, Ax - 30, Ay - 10);
+            ctx.fillText(`∠B = ${B.toFixed(2)}°`, Bx + 10, By + 10);
+            ctx.fillText(`∠C = ${C.toFixed(2)}°`, Cx + 5, Cy - 15);
+        }
+    </script>
+
+</body>
+</html>

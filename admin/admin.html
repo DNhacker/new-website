@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+<script src="/assets/js/firebase-init.js"></script>
+
+</head>
+<body>
+
+  <!-- Login Page -->
+  <div class="container" id="loginContainer">
+    <span style="--clr:#eeff00;"></span>
+    <span style="--clr:#00ffdd;"></span>
+    <span style="--clr:#e900d5;"></span>
+    <div class="form-container">
+      <h2>Login form</h2>
+      <div class="input-container">
+        <input type="email" id="email" placeholder="Email">
+      </div>
+      <div class="input-container">
+        <input type="password" id="password" placeholder="Password">
+      </div>
+      <div class="input-container">
+        <input type="submit" value="Sign in" onclick="login()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div class="container" id="adminContainer" style="display: none;">
+    <h1>Admin Dashboard</h1>
+
+    <!-- Blog Upload Section -->
+    <section>
+      <h2>Upload Blog</h2>
+      <input type="text" id="blogTitle" placeholder="Blog Title">
+      <textarea id="blogContent" placeholder="Blog Content"></textarea>
+      <input type="text" id="uploadedBy" placeholder="Uploaded by (e.g. Admin Name)">
+      <button onclick="uploadBlog()">Upload Blog</button>
+    </section>
+
+    <!-- Image Upload Section -->
+    <section>
+      <h2>Upload Photo</h2>
+      <input type="file" id="photoInput" accept="image/*">
+      <button onclick="uploadPhoto()">Upload Photo</button>
+
+      <div id="imagePreviewContainer">
+        <p>Selected Image Preview:</p>
+        <img id="imagePreview" alt="Preview">
+      </div>
+    </section>
+
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" style="display: none;"></div>
+
+  <script src="../assets/js/admin.js"></script>
+</body>
+</html>
